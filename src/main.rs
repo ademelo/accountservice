@@ -1,42 +1,54 @@
+use std::io;
+use std::net::Ipv4Addr;
 use axum;
-use axum::{Json, Router};
-use axum::routing::get;
-use axum_swagger_ui::swagger_ui;
+use axum::{Json};
+use axum::routing::MethodRouter;
 use tokio;
 use serde_json::{json, Value};
-use axum_openapi3::{
-    build_openapi, // function for building the openapi spec
-    endpoint,      // macro for defining endpoints
-    reset_openapi, // function for cleaning the openapi cache (mostly used for testing)
-    AddRoute,      // `add` method for Router to add routes also to the openapi spec
-};
+use tokio::net::TcpListener;
+use tower_http::cors::AllowMethods;
+use utoipa::OpenApi;
+use utoipa_axum::router::OpenApiRouter;
+use utoipa_axum::routes;
+use utoipa_swagger_ui::SwaggerUi;
 
+
+#[derive(OpenApi)]
+#[openapi(
+)]
+struct ApiDoc;
 
 #[tokio::main]
-async fn main() {
-    let doc_url = "swagger/openapi.json";
-    let app = Router::new()
-        .route("/swagger", get(|| async { swagger_ui(doc_url) }))
-        //.route(doc_url, get(|| async { include_str!("openapi.json") }))
-        .route("/", get(hello))
-        .route("/health", get(health));
+async fn main() -> Result<(), io::Error> {
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
+    let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
+        .routes(routes!(hello))
+        .route("/health", MethodRouter::new().get(health))
+        .split_for_parts();
+
+    let router = router.merge(SwaggerUi::new("/swagger-ui").url("/apidoc/openapi.json", api));
+
+    let listener = TcpListener::bind((Ipv4Addr::LOCALHOST,8080))
         .await
-        .expect("failed to bind server");
+        .expect("failed to start");
 
     println!("Server running at http://127.0.0.1:8080");
 
-    axum::serve(listener, app)
-        .await
-        .expect("server failed");
+    axum::serve(listener, router).await
 }
 
-//#[endpoint(method = "POST", path = "/todos", description = "Insert a new todo")]
+#[utoipa::path(get, path = "/", responses((status = OK, body = str)))]
 async fn hello() -> &'static str {
     "Hello from accountservice"
 }
 
+#[utoipa::path(
+    method(get, head),
+    path = "/health",
+    responses(
+        (status = OK, description = "Success", body = str, content_type = "application/json")
+    )
+)]
 async fn health() -> Json<Value> {
     Json(json!({ "status": "OK" }))
 }
