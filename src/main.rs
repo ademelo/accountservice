@@ -2,6 +2,7 @@ use std::io;
 use std::net::Ipv4Addr;
 use axum;
 use axum::{Json};
+use tokio_postgres::NoTls;
 use tokio;
 use serde_json::{json, Value};
 use tokio::net::TcpListener;
@@ -10,6 +11,11 @@ use utoipa_axum::router::OpenApiRouter;
 use utoipa_axum::routes;
 use utoipa_swagger_ui::SwaggerUi;
 
+
+mod embedded {
+    use refinery::embed_migrations;
+    embed_migrations!("migrations/postgres");
+}
 
 #[derive(OpenApi)]
 #[openapi(
@@ -23,6 +29,20 @@ struct ApiDoc;
 
 #[tokio::main]
 async fn main() -> Result<(), io::Error> {
+
+    let (mut client, connection) = tokio_postgres::connect(
+        "host=localhost user=username password=password dbname=postgres",
+        NoTls
+    ).await.expect("Failed to connect to database");
+
+    tokio::spawn(async move {
+        if let Err(e) = connection.await {
+            eprintln!("connection error: {}", e);
+        }
+    });
+
+    embedded::migrations::runner().run_async(&mut client).await.expect("Failed to run migrations");
+
     let router = app();
 
     let listener = TcpListener::bind((Ipv4Addr::LOCALHOST, 8080))
