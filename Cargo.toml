@@ -14,9 +14,10 @@ tower-http = { version = "0.6", features = ["trace", "cors", "timeout"] }
 utoipa = "5.5.0"
 utoipa-axum = "0.2.0"
 utoipa-swagger-ui = { version = "9", features = ["axum"] }
-cornucopia = "1.0.1"
+#codegen = { path = "cornucopia_codegen", package = "cornucopia_codegen" }
 tokio-postgres = "0.7"
 refinery = { version = "0.8", features = ["tokio-postgres"]}
+sqlx = { version = "0.9.0", features = ["postgres", "runtime-tokio"] }
 
 [dev-dependencies]
 tower = { version = "0.5", features = ["util"] }

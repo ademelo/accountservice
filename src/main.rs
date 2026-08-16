@@ -1,12 +1,14 @@
 use std::io;
 use std::net::Ipv4Addr;
 use axum;
-use axum::{Json};
+use axum::{Json, extract::State};
+use serde::{Deserialize, Serialize};
 use tokio_postgres::NoTls;
 use tokio;
 use serde_json::{json, Value};
+use sqlx::{postgres::PgPoolOptions, FromRow, PgPool};
 use tokio::net::TcpListener;
-use utoipa::OpenApi;
+use utoipa::{OpenApi, ToSchema};
 use utoipa_axum::router::OpenApiRouter;
 use utoipa_axum::routes;
 use utoipa_swagger_ui::SwaggerUi;
@@ -27,6 +29,11 @@ mod embedded {
 )]
 struct ApiDoc;
 
+#[derive(Debug, Clone)]
+struct AppState {
+    pool: PgPool,
+}
+
 #[tokio::main]
 async fn main() -> Result<(), io::Error> {
 
@@ -43,7 +50,37 @@ async fn main() -> Result<(), io::Error> {
 
     embedded::migrations::runner().run_async(&mut client).await.expect("Failed to run migrations");
 
-    let router = app();
+    let database_url = "postgres://username:password@localhost:5432/postgres";
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect(database_url)
+        .await
+        .expect("Failed to connect to database");
+
+    let mut tx = pool.begin().await.expect("Failed to start transaction");
+    sqlx::query("INSERT INTO users (first_name, last_name, country) VALUES ($1, $2, $3)")
+        .bind("John")
+        .bind("Doe")
+        .bind("England")
+        .execute(&mut *tx)
+        .await
+        .expect("Failed to insert user 1");
+
+    sqlx::query("INSERT INTO users (first_name, last_name, country) VALUES ($1, $2, $3)")
+        .bind("Toto ")
+        .bind("Titi")
+        .bind("Spain")
+        .execute(&mut *tx)
+        .await
+        .expect("Failed to insert user 2");
+
+    tx.commit().await.expect("Failed to commit transaction");
+
+    let state =AppState {
+        pool,
+    };
+
+    let router = app(state);
 
     let listener = TcpListener::bind((Ipv4Addr::LOCALHOST, 8080))
         .await
@@ -54,14 +91,16 @@ async fn main() -> Result<(), io::Error> {
     axum::serve(listener, router).await
 }
 
-fn app() -> axum::Router {
+fn app(state: AppState) -> axum::Router {
     let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
         .routes(routes!(hello))
         .routes(routes!(users))
         .routes(routes!(health))
         .split_for_parts();
 
-    router.merge(SwaggerUi::new("/swagger-ui").url("/apidoc/openapi.json", api))
+    router
+        .merge(SwaggerUi::new("/swagger-ui").url("/apidoc/openapi.json", api))
+        .with_state(state)
 }
 
 #[utoipa::path(get, path = "/", responses((status = OK, body = str)))]
@@ -69,14 +108,26 @@ async fn hello() -> &'static str {
     "Hello from accountservice"
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow, ToSchema)]
+struct User {
+    id: i32,
+    first_name: String,
+    last_name: String,
+    country: String,
+}
 #[utoipa::path(
     get,
     path = "/users",
     responses((status = OK, description = "Success", body = str, content_type = "application/json"))
 )]
-async fn users() -> Json<Value> {
-    let user_list = vec![1, 2, 3];
-    Json(json!(user_list))
+async fn users(State(state): State<AppState>) -> Json<Vec<User>> {
+    let users = sqlx::query_as::<_, User>("SELECT * FROM users")
+        .fetch_all(&state.pool)
+        .await
+        .expect("Failed to fetch users");
+
+    //let user_list: Vec<i32> = rows.into_iter().map(|row| row).collect();
+    Json(users)
 }
 
 #[utoipa::path(
@@ -100,6 +151,14 @@ mod tests {
     use tower::ServiceExt;
     use http_body_util::BodyExt;
 
+    fn test_state() -> AppState {
+        let pool = PgPoolOptions::new()
+            .connect_lazy("postgres://username:password@localhost:5432/postgres")
+            .expect("Failed to create lazy test database pool");
+
+        AppState { pool }
+    }
+
     #[tokio::test]
     async fn test_hello_handler() {
         let response = hello().await;
@@ -114,7 +173,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_hello_route() {
-        let app = app();
+        let app = app(test_state());
 
         let response = app
             .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
@@ -129,7 +188,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_health_route() {
-        let app = app();
+        let app = app(test_state());
 
         let response = app
             .oneshot(
@@ -150,7 +209,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_openapi_json() {
-        let app = app();
+        let app = app(test_state());
 
         let response = app
             .oneshot(
