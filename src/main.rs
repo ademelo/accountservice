@@ -2,6 +2,7 @@ use std::io;
 use std::net::Ipv4Addr;
 use axum;
 use axum::{Json, extract::State};
+use config::{Config, File, Source};
 use serde::{Deserialize, Serialize};
 use tokio_postgres::NoTls;
 use tokio;
@@ -34,8 +35,32 @@ struct AppState {
     pool: PgPool,
 }
 
+
+#[derive(Debug, Deserialize)]
+#[allow(unused)]
+pub struct DatabaseConfig {
+    pub host: String,
+    pub user: String,
+    pub password: String
+}
+
 #[tokio::main]
 async fn main() -> Result<(), io::Error> {
+
+    let settings = Config::builder()
+        //.add_source(Environment::default())
+        .add_source(File::with_name("config/dev.toml"))
+        .build()
+        .expect("Failed to build settings");
+
+    /*settings.collect().iter()
+        .for_each(|map| { 
+            map.iter()
+                .for_each(|s| { println!("{:#?} : {:#?}", s.0, s.1); });
+        });*/
+    let  database_config : DatabaseConfig = settings.try_deserialize().unwrap();
+
+    println!("Settings: {:#?}", database_config);
 
     let (mut client, connection) = tokio_postgres::connect(
         "host=localhost user=username password=password dbname=postgres",
