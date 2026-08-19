@@ -53,17 +53,15 @@ async fn main() -> Result<(), io::Error> {
         .build()
         .expect("Failed to build settings");
 
-    /*settings.collect().iter()
-        .for_each(|map| { 
-            map.iter()
-                .for_each(|s| { println!("{:#?} : {:#?}", s.0, s.1); });
-        });*/
     let  database_config : DatabaseConfig = settings.try_deserialize().unwrap();
 
     println!("Settings: {:#?}", database_config);
 
     let (mut client, connection) = tokio_postgres::connect(
-        "host=localhost user=username password=password dbname=postgres",
+        format!("host={} user={} password={} dbname=postgres",
+                database_config.host,
+                database_config.user,
+                database_config.password).as_str(),
         NoTls
     ).await.expect("Failed to connect to database");
 
