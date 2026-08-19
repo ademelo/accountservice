@@ -2,7 +2,7 @@ use std::io;
 use std::net::Ipv4Addr;
 use axum;
 use axum::{Json, extract::State};
-use config::{Config, File, Source};
+use config::{Config, File};
 use serde::{Deserialize, Serialize};
 use tokio_postgres::NoTls;
 use tokio;
