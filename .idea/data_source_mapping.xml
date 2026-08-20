@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/migrations/postgres/V1__create_users_table.sql" value="1c256f72-c0d8-495a-9216-01cb79e3da0a" />
+  </component>
+</project>

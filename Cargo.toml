@@ -1,5 +1,5 @@
 [package]
-name = "untitled"
+name = "accountservice"
 version = "0.1.0"
 edition = "2024"
 
@@ -19,6 +19,7 @@ tokio-postgres = "0.7"
 refinery = { version = "0.8", features = ["tokio-postgres"]}
 sqlx = { version = "0.9.0", features = ["postgres", "runtime-tokio"] }
 config = "0.15.25"
+thiserror = "2"
 
 [dev-dependencies]
 tower = { version = "0.5", features = ["util"] }
