@@ -18,10 +18,13 @@ impl UserService {
 
     pub async fn create_user(
         pool: &PgPool,
-        first_name: &str,
-        last_name: &str,
-        country: &str,
+        user: User,
     ) -> Result<User, AppError> {
-        UserRepository::create(pool, first_name, last_name, country).await
+        UserRepository::create(
+            pool,
+            &user.first_name,
+            &user.last_name,
+            &user.country
+        ).await
     }
 }

@@ -30,6 +30,7 @@ pub fn create_router(state: AppState) -> Router {
         .routes(routes!(health::health))
         .routes(routes!(users::list_users))
         .routes(routes!(users::get_user))
+        .routes(routes!(users::create_user))
         .split_for_parts();
 
     router

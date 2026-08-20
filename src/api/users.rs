@@ -40,3 +40,20 @@ pub async fn get_user(
     let user = UserService::get_user_by_id(&state.pool, id).await?;
     Ok(Json(user))
 }
+
+#[utoipa::path(
+    post,
+    path = "/users",
+    request_body(content = User),
+    responses(
+        (status = CREATED, description = "User created", body = User),
+        (status = BAD_REQUEST, description = "Invalid user data")
+    )
+)]
+pub async fn create_user(
+    State(state): State<AppState>,
+    Json(user): Json<User>,
+) -> Result<Json<User>, AppError> {
+    let created_user = UserService::create_user(&state.pool, user).await?;
+    Ok(Json(created_user))
+}
