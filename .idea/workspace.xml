@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="CargoProjects">
+    <cargoProject FILE="$PROJECT_DIR$/Cargo.toml">
+      <package file="$PROJECT_DIR$">
+        <feature name="default" enabled="true" />
+      </package>
+    </cargoProject>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="32c4e3b8-73ba-43a2-8674-feda79beb1a8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseLocalColorSettings">
+    <colors>
+      <entry key="1c256f72-c0d8-495a-9216-01cb79e3da0a" value="" />
+    </colors>
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="21" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="pU7rIZfR" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.1955814179528004E-4" />
+      <entry key="MS500" value="0.16450322393252842" />
+      <entry key="S2" value="0.7630411066412779" />
+      <entry key="S5" value="1.3277994677263627" />
+      <entry key="S10" value="1.8125716037675432" />
+      <entry key="S30" value="2.4617008345988634" />
+      <entry key="S60" value="2.7248544084874515" />
+      <entry key="M2" value="2.98416682101296" />
+      <entry key="M5" value="3.3897637261418487" />
+      <entry key="M10" value="3.641170007030847" />
+      <entry key="M15" value="3.7466964831068985" />
+      <entry key="M30" value="3.8656770928767727" />
+      <entry key="H1" value="3.9307927666650624" />
+      <entry key="H2" value="3.9648701720214827" />
+      <entry key="H4" value="4.003054137882617" />
+      <entry key="D1" value="118.8959092440543" />
+      <entry key="W1" value="798.9686426990714" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.000000000097751" />
+      <entry key="S30" value="1.0004606525649877" />
+      <entry key="S60" value="1.021462818197707" />
+      <entry key="M2" value="1.1465019392284859" />
+      <entry key="M5" value="1.4638070538660743" />
+      <entry key="M10" value="1.6810338125717945" />
+      <entry key="M15" value="1.7740680042418058" />
+      <entry key="M30" value="1.8798113458246632" />
+      <entry key="H1" value="1.9379825935616628" />
+      <entry key="H2" value="1.9684950227719726" />
+      <entry key="H4" value="1.9846204471982742" />
+      <entry key="D1" value="8.122575160855227" />
+      <entry key="W1" value="42.464275331292576" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="3.3929688144519385E-4" />
+      <entry key="MS500" value="0.3056510907656015" />
+      <entry key="S2" value="1.289719175322798" />
+      <entry key="S5" value="2.0066246207367087" />
+      <entry key="S10" value="2.5984840554610638" />
+      <entry key="S30" value="3.371246152443076" />
+      <entry key="S60" value="3.6963571486247324" />
+      <entry key="M2" value="4.1007591073350795" />
+      <entry key="M5" value="4.83712074875097" />
+      <entry key="M10" value="5.312453991536178" />
+      <entry key="M15" value="5.5138286718729965" />
+      <entry key="M30" value="5.741772487111932" />
+      <entry key="H1" value="5.866849083958742" />
+      <entry key="H2" value="5.932384133158295" />
+      <entry key="H4" value="5.987179326522452" />
+      <entry key="D1" value="127.01810362346134" />
+      <entry key="W1" value="841.4326330066053" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3HmqtWV0MzmNfIm7IvnnVdJfMYU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CidrDebugProfileConversion": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/alexandre/projects/dev/accountservice",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": ""
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/migrations/postgres" />
+    </key>
+  </component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="/snap/bin" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="32c4e3b8-73ba-43a2-8674-feda79beb1a8" name="Changes" comment="" />
+      <created>1786483807573</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1786483807573</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
